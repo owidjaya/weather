@@ -15,7 +15,7 @@ class WeatherController {
     public function query($request, $response, $args) {
         $queryParams = $request->getQueryParams();
         $yahooURL =  $this->ci['settings']['yahooURL'] ;
-        $yqlQuery = sprintf($this->ci['settings']['yqlQuery'], $queryParams['zipCode'].",us");
+        $yqlQuery = sprintf($this->ci['settings']['yqlQuery'], $queryParams['zipCode'].",us", $queryParams['celcius'] == "true" ? 'c': 'f');
         $yahooClientKey = $this->ci['settings']['yahooClientKey'];
         $yahooClientSecret = $this->ci['settings']['yahooClientSecret'];
         $params = array( 

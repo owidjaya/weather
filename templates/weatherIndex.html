@@ -17,10 +17,11 @@
 <script>
 angular.module('WeatherApp', [])
   .controller('WeatherAppController', ['$scope', '$http', function($scope, $http) {
+    $scope.celcius =false;
     $scope.getWeatherInfo = function() {
         $http({
           method: 'GET',
-          url: 'index.php/weather?zipCode='+$scope.zipCode
+          url: 'index.php/weather?zipCode='+$scope.zipCode+ "&celcius="+$scope.celcius 
         }).then(function successCallback(response) {
             $scope.weather = response.data; 
         }, function errorCallback(response) {
@@ -51,6 +52,11 @@ angular.module('WeatherApp', [])
                         <label class='sr-only' for='zipcode'>ZipCode:</label>
                         <input id='zipcode' placeholder='zipcode' class='form-control' type='text' ng-model='zipCode'></input>
                     </div>
+                     <div class="checkbox">
+                        <label>
+                          <input type="checkbox" ng-model='celcius'> Celcius
+                        </label>
+                     </div>
                     <button class='btn btn-primary' ng-click='getWeatherInfo()'>Get Weather</button>
                 </form>
                 <div ng-if='weather'>

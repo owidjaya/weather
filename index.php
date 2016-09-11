@@ -8,7 +8,7 @@ $container = [
     "settings" => [
         'displayErrorDetails' => false,
         'yahooURL' => "http://query.yahooapis.com/v1/public/yql",
-        'yqlQuery' => 'select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="%s")',
+        'yqlQuery' => 'select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="%s" ) and u="%s"',
     ]
 ];
 // Register component on container
