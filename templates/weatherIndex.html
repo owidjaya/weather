@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+<!--<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap-theme.min.css" />-->
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<style>
+    .navbar-brand img {
+        display:inline ;
+    }
+</style>
+{% endblock %}
+{% block javascripts %}
+<script type='text/javascript' src='node_modules/jquery/dist/jquery.min.js'></script>
+<script type='text/javascript' src='node_modules/bootstrap/dist/js/bootstrap.min.js'></script>
+<script type='text/javascript' src='node_modules/angular/angular.min.js'></script>
+<script>
+angular.module('WeatherApp', [])
+  .controller('WeatherAppController', ['$scope', '$http', function($scope, $http) {
+    $scope.getWeatherInfo = function() {
+        $http({
+          method: 'GET',
+          url: 'index.php/weather?zipCode='+$scope.zipCode
+        }).then(function successCallback(response) {
+            $scope.weather = response.data; 
+        }, function errorCallback(response) {
+            $scope.weather = response.data; 
+        });
+    }
+   }]);
+  
+</script>
+{% endblock %}
+
+{% block body %}
+<nav class="navbar navbar-default">
+    <div class='container-fluid'>
+        <div class='navbar-header'>
+            <a class='navbar-brand'>
+                <img height='20px' src='/images/sun-2-xxl.png'> Weather App </a>
+        </div>
+        
+    </div>
+</nav>
+<div class='container-fluid'>
+    <div ng-app='WeatherApp' class='row' ng-cloak>
+        <div class='col-xs-12'>
+            <div ng-controller='WeatherAppController'>
+                <form class='form-inline'>
+                    <div class='form-group'>
+                        <label class='sr-only' for='zipcode'>ZipCode:</label>
+                        <input id='zipcode' placeholder='zipcode' class='form-control' type='text' ng-model='zipCode'></input>
+                    </div>
+                    <button class='btn btn-primary' ng-click='getWeatherInfo()'>Get Weather</button>
+                </form>
+                <div ng-if='weather'>
+                     <div ng-bind='weather.query.results.channel.item.title'></div>
+                     <table class='table table-striped'>
+                         <tr ng-repeat='condition in weather.query.results.channel.item.forecast'>
+                            <td><span ng-bind='condition.date'></span> (<span ng-bind='condition.day'></span>)</td>
+                            <td><span ng-bind='condition.high'></span> - <span ng-bind='condition.low'></span> <span ng-bind='$parent.weather.query.results.channel.units.temperature'></span></td> 
+                            <td ng-bind='condition.text'></td> 
+                         </tr>
+                     </table>
+                </div>
+                <div ng-if='!weather'><em>Put zipcode above to find out weather information</em></div>
+            </div>
+        </div>
+    </div>
+        
+<a href="https://www.yahoo.com/?ilc=401" target="_blank"> <img src="https://poweredby.yahoo.com/purple.png" width="134" height="29"/> </a>
+
+</div>
+{% endblock %}
