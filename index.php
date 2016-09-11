@@ -6,17 +6,7 @@ require 'vendor/autoload.php';
 $container = new \Slim\Container;
 $container = [
     "settings" => [
-        "db" => [
-            'driver' => 'pgsql',
-            'host' => 'localhost',
-            'database' => 'weather',
-            'username' => 'ubuntu',
-            'password' => '',
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-        ],
-        'displayErrorDetails' => true,
+        'displayErrorDetails' => false,
         'yahooURL' => "http://query.yahooapis.com/v1/public/yql",
         'yqlQuery' => 'select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="%s")',
     ]
